@@ -1,0 +1,31 @@
+{
+  "name": "cotizdolar",
+  "version": "1.0.0",
+  "description": "Cotizaciones Dolar Americano en Paraguay",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cabupy/cotizdolar.git"
+  },
+  "keywords": [
+    "dolar",
+    "cotizacion",
+    "paraguay"
+  ],
+  "author": "cabupy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cabupy/cotizdolar/issues"
+  },
+  "homepage": "https://github.com/cabupy/cotizdolar#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "pg": "^7.11.0",
+    "request": "^2.88.0"
+  }
+}
