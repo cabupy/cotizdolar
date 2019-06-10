@@ -409,6 +409,8 @@ const insertDB = async json_values => {
 };
 
 // main();
-getCotizaciones().then(json_values => {
-  insertDB(json_values);
-});
+getCotizaciones()
+  .then(json_values => {
+    insertDB(json_values);
+  })
+  .catch(error => console.error(error.message));
