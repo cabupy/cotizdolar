@@ -4,7 +4,7 @@
 
 CREATE TABLE public.cotizaciones
 (
-    id biserial NOT NULL,
+    id bigserial NOT NULL,
     fecha_hora timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     entidad character varying(20) NOT NULL,
     moneda character varying(20) NOT NULL,

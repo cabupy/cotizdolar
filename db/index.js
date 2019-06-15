@@ -34,7 +34,8 @@ module.exports = {
                   resolve(datos)
                   break;
                 default:
-                  console.log('default:', result)
+                  //console.log('default:', result)
+                  //console.log(result)
                   resolve(result)
               }
             }
