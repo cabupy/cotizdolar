@@ -1,14 +1,13 @@
 const CronJob = require("cron").CronJob;
-const { processTweet } = require("./modules/twitter");
+const { 
+  processTweet, 
+  processTweetRef 
+} = require("./modules/twitter");
 
 const main = () => {
-  setTimeout(() => {
-    processTweet(`compra`);
-  }, 5000);
-
-  setTimeout(() => {
-    processTweet(`venta`);
-  }, 10000);
+  await processTweet(`compra`);
+  await processTweet(`venta`);
+  await processTweetRef(`venta`);
 };
 
 new CronJob(

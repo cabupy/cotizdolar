@@ -1,13 +1,12 @@
-const { processTweet } = require("./modules/twitter");
+const { 
+  processTweet, 
+  processTweetRef 
+} = require("./modules/twitter");
 
-const main = () => {
-  setTimeout(() => {
-    processTweet(`compra`);
-  }, 1000);
-
-  setTimeout(() => {
-    processTweet(`venta`);
-  }, 11000);
+const main = async () => {
+  await processTweet(`compra`);
+  await processTweet(`venta`);
+  await processTweetRef(`venta`);
 };
 
 main();

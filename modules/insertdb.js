@@ -45,6 +45,14 @@ const getCotizaciones = async () => {
     venta: chaco[2]
   });
 
+  const euro = await mc.getEURO();
+  //console.log(euro);
+  cotizaciones.push({
+    casa: "euro",
+    compra: euro[1],
+    venta: euro[2]
+  });
+
   const familiar = await mc.getFamiliar();
   //console.log(familiar);
   cotizaciones.push({
@@ -117,6 +125,8 @@ const main = async () => {
   // console.log(bcp);
   // const chaco = await mc.getChaco();
   // console.log(chaco);
+  // const euro = await mc.getEURO();
+  // console.log(euro);
   // const fe = await mc.getFe();
   // console.log(fe);
   // const familiar = await mc.getFamiliar();
@@ -155,7 +165,9 @@ const processData = async () => {
   }
 };
 
-//processData();
+// processData();
+
+//main();
 
 module.exports = {
   processData

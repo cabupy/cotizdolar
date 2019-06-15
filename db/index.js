@@ -1,4 +1,4 @@
-var pg = require('pg')
+const pg = require('pg')
 
 const postgres = require('../config').postgres
 

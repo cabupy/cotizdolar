@@ -5,7 +5,7 @@ const moment = require("moment");
 require("dotenv").config({ path: path.join(__dirname, "/../.env") });
 const db = require("../db");
 
-const { processData } = require('./insertdb');
+const { processData } = require("./insertdb");
 
 const ahora = moment(Date.now()).format("HH:mm");
 
@@ -27,9 +27,28 @@ const getBestBy = async field => {
     const rows = await db.query(`SELECT c.* FROM (
       SELECT DISTINCT ON (a.entidad) a.*
       FROM public.cotizaciones a
-      INNER JOIN public.cotizaciones b ON a.id=b.id
+      INNER JOIN public.cotizaciones b ON a.id=b.id 
+        AND a.entidad not in ('set', 'bcp')
+	      AND a.fecha_hora::date = current_date
       ORDER BY a.entidad, b.fecha_hora DESC) c
-      ORDER BY ${field} ${ field == 'venta' ? 'ASC' : 'DESC' }`);
+      ORDER BY ${field} ${field == "venta" ? "ASC" : "DESC"}`);
+    return rows;
+  } catch (error) {
+    console.log(error.message);
+    return [];
+  }
+};
+
+const getRefBy = async field => {
+  try {
+    const rows = await db.query(`SELECT c.* FROM (
+      SELECT DISTINCT ON (a.entidad) a.*
+      FROM public.cotizaciones a
+      INNER JOIN public.cotizaciones b ON a.id=b.id 
+        AND a.entidad in ('set', 'bcp')
+	      AND a.fecha_hora::date = current_date
+      ORDER BY a.entidad, b.fecha_hora DESC) c
+      ORDER BY ${field} ${field == "venta" ? "ASC" : "DESC"}`);
     return rows;
   } catch (error) {
     console.log(error.message);
@@ -55,39 +74,66 @@ const sendTweet = cadenaTweet => {
 const makeTextTweet = (rows, title) => {
   return new Promise((resolve, reject) => {
     let cadenaTweet = `${title}`;
-    let referencia = ``
     rows.map((row, i) => {
-      if (row.entidad == 'set' || row.entidad == 'bcp' ) {
-        
-        if (referencia == '') {
-          referencia += `${row.compra} | ${row.venta} | ${row.entidad}\n`;
-        } else {
-          referencia += `${row.compra} | ${row.venta} | ${row.entidad}`;
-        }
-      
-      } /*else if (rows.length == i + 1) {
-        cadenaTweet += `${row.compra} | ${row.venta} | ${row.entidad}`;
-      }*/ else {
-        cadenaTweet += `${row.compra} | ${row.venta} | ${row.entidad}\n`;
-      }
+      cadenaTweet += `${row.compra} | ${row.venta} | ${row.entidad}${
+        rows.length == i + 1 ? "" : "\n"
+      }`;
     });
-    cadenaTweet += referencia;
     resolve(cadenaTweet);
   });
+};
+
+const processTweetRef = async (mode) => {
+  let cadenaTweet = ``;
+  try {
+    const rowsBS = await getRefBy(mode);
+    if (rowsBS.length > 0) {
+      cadenaTweet = await makeTextTweet(
+        rowsBS,
+        `⏳ ${ahora} 🏦 SET y BCP:\n`
+      );
+      // show string Teewt
+      console.log(cadenaTweet);
+      const envioTweet = await sendTweet(cadenaTweet);
+      if (envioTweet.success) {
+        console.log(
+          `Se envio el tweet ID: ${envioTweet.id} en fecha: ${
+            envioTweet.created_at
+          }`
+        );
+      } else {
+        console.error(
+          `Ocurrio un error al enviar el Tweet. Error: ${
+            envioTweet.err.message
+          }`
+        );
+      }
+    } else {
+      console.log(`No hay nada que enviar.`);
+    }
+  } catch (error) {
+    console.error(
+      `Error al buscar la cotizacion de referencia: Error: ${error.message}`
+    );
+  }
 };
 
 const processTweet = async mode => {
   let cadenaTweet = ``;
   try {
-    const insertDB = await processData();
-    if (!insertDB){
-      console.log(`No se proceso correctamente el processData().`);
+    // only if mode is equal compra, on venta select database direct ..
+    if (mode === "compra") {
+      const insertDB = await processData();
+      if (!insertDB) {
+        console.log(`insertDB, No se proceso correctamente el processData().`);
+      }
     }
+
     const rowsBS = await getBestBy(mode);
     if (rowsBS.length > 0) {
       cadenaTweet = await makeTextTweet(
         rowsBS,
-        `${ahora} Orden Mejor ${capitalize(mode)}:\n`
+        `⏳ ${ahora} Orden 👌 ${capitalize(mode)}:\n`
       );
       // show string Teewt
       console.log(cadenaTweet);
@@ -124,5 +170,6 @@ const processTweet = async mode => {
 // }, 10000);
 
 module.exports = {
-  processTweet
+  processTweet,
+  processTweetRef
 };

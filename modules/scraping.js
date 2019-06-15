@@ -10,6 +10,7 @@ const _ = require("lodash");
 // bbva
 // bcp
 // chaco
+// eurocambios
 // familiar
 // fe
 // interfisa
@@ -39,6 +40,25 @@ const rb = url => {
         resolve([]);
       }
     });
+  });
+};
+
+const rpb = url => {
+  return new Promise((resolve, reject) => {
+    r.post(
+      {
+        url: url,
+        form: { param: "getCotizacionesbySucursal", sucursal: 1 }
+      },
+      function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+          const json_response = JSON.parse(response.body);
+          resolve(json_response);
+        } else {
+          resolve([]);
+        }
+      }
+    );
   });
 };
 
@@ -130,6 +150,18 @@ const getChaco = async () => {
     return ["cambioschaco", compra, venta];
   } catch (error) {
     return ["cambioschaco", 0, 0];
+  }
+};
+
+const getEURO = async () => {
+  try {
+    const body = await rpb(`https://eurocambios.com.py/v2/sgi/utilsDto.php`);
+    const compra = +body[0].compra;
+    const venta = +body[0].venta;
+    return ["eurocambios", compra, venta];
+  } catch (error) {
+    console.log(error);
+    return ["eurocambios", 0, 0];
   }
 };
 
@@ -253,17 +285,18 @@ const getVision = async () => {
   }
 };
 
- module.exports = {
-   getAlberdi,
-   getBASA,
-   getBBVA,
-   getBCP,
-   getChaco,
-   getFamiliar,
-   getFe,
-   getInterfisa,
-   getMaxicambios,
-   getMyD,
-   getSET,
-   getVision
- }
+module.exports = {
+  getAlberdi,
+  getBASA,
+  getBBVA,
+  getBCP,
+  getChaco,
+  getEURO,
+  getFamiliar,
+  getFe,
+  getInterfisa,
+  getMaxicambios,
+  getMyD,
+  getSET,
+  getVision
+};
