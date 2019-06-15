@@ -3,11 +3,11 @@ const { processTweet } = require("./modules/twitter");
 const main = () => {
   setTimeout(() => {
     processTweet(`compra`);
-  }, 5000);
+  }, 1000);
 
   setTimeout(() => {
     processTweet(`venta`);
-  }, 10000);
+  }, 11000);
 };
 
 main();
