@@ -90,7 +90,7 @@ const processTweetRef = async (mode) => {
     if (rowsBS.length > 0) {
       cadenaTweet = await makeTextTweet(
         rowsBS,
-        `⏳ ${ahora} 🏦 SET y BCP:\n`
+        `⌚ ${ahora} 🏦 SET y BCP:\n`
       );
       // show string Teewt
       console.log(cadenaTweet);
@@ -133,7 +133,7 @@ const processTweet = async mode => {
     if (rowsBS.length > 0) {
       cadenaTweet = await makeTextTweet(
         rowsBS,
-        `⏳ ${ahora} Orden 👌 ${capitalize(mode)}:\n`
+        `⌚ ${ahora} Orden 👌 ${capitalize(mode)}:\n`
       );
       // show string Teewt
       console.log(cadenaTweet);
