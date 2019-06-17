@@ -22,7 +22,7 @@ module.exports = {
   },
   fourth: function(i){
     i = i+1;
-    console.log('Ver:', i, (i%4===0));
+    //console.log('Ver:', i, (i%4===0));
     return i%4===0;
   }
   
