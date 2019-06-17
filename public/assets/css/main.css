@@ -1,0 +1,31 @@
+/* The CSS rules we had before. */
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+
+body {
+  font-family: "Montserrat", Helvetica, sans-serif;
+}
+
+.cubos {
+  position: relative;
+  float: left;
+  width: 150px;
+  height: 100px;
+  border: 2px solid #000000;
+  padding: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  background-color: #363636;
+  color: white;
+  text-align: center;
+}
+
+.numeros{
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.is-azul {
+  background-color: #2a4269;
+  color: #fff;
+}

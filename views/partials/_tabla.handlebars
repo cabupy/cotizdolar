@@ -1,0 +1,28 @@
+<table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth is-dark">
+  <thead>
+    <tr>
+      <th class="is-dark">Fecha</th>
+      <th class="is-dark">Entidad</th>
+      <th class="is-dark">Compra</th>
+      <th class="is-dark">Venta</th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <th class="is-dark">Fecha</th>
+      <th class="is-dark">Entidad</th>
+      <th class="is-dark">Compra</th>
+      <th class="is-dark">Venta</th>
+    </tr>
+  </tfoot>
+  <tbody>
+    {{#each cotizaciones}}
+    <tr>
+      <td>{{ formatDate fecha_hora 'DD/MM/YYYY HH:mm' }}</td>
+      <td>{{ toUpperCase entidad }}</td>
+      <td>{{ formatNumber compra }}</td>
+      <td>{{ formatNumber venta }}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

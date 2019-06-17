@@ -1,11 +1,24 @@
 const http = require("http");
+const path = require("path");
+const request = require("request");
 const bodyParser = require("body-parser");
 const volleyball = require("volleyball");
 const cors = require("cors");
+const exphbs = require('express-handlebars');
 const db = require("./db");
 require("dotenv").config();
-const app = require("express")();
+const express = require("express");
+const app = express();
 const routes = require("./routes");
+
+//Handlebars Helpers
+const {
+  truncate,
+  formatDate,
+  formatNumber,
+  toUpperCase,
+  fourth
+} = require('./helpers/hbs');
 
 app.set("trust proxy", true);
 app.set("strict routing", true);
@@ -30,6 +43,38 @@ app.use((req, res, next) => {
     "Somos Vamyal, Escribinos a <contacto@vamyal.com>"
   );
   next();
+});
+
+// Handlebars Middleware
+app.engine('handlebars', exphbs({
+  helpers: {
+    truncate: truncate,
+    formatDate: formatDate,
+    formatNumber: formatNumber,
+    toUpperCase: toUpperCase,
+    fourth: fourth
+  }, 
+  defaultLayout:'main' 
+}));
+app.set('view engine', 'handlebars');
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res, next) => {
+
+    request({url: `http://${req.headers.host}/v1/cotizaciones`}, (error, response, body) => {
+      
+      if (error) {
+        console.error(error);
+        res.render('index/principal', { cotizaciones: [] });
+        return 
+      }
+      
+      const cotizaciones = JSON.parse(body);
+      //console.log(cotizaciones);
+      res.render('index/principal', { cotizaciones });
+   });
 });
 
 // Cargamos las rutas habilitadas.

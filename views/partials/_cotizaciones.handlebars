@@ -1,0 +1,40 @@
+<div class="columns">
+  {{#each cotizaciones}}
+  <div class="column is-3">
+    <article class="message is-link">
+      <div class="message-header">
+        <p>{{ toUpperCase entidad }}</p>
+      </div>
+      <div class="message-body">
+        <div class="columns">
+          <div class="column is-6 has-text-centered">
+            Compra
+          </div>
+           <div class="column is-6 has-text-centered">
+            Venta
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-6 has-text-centered numeros">
+            {{ formatNumber compra }}
+          </div>
+           <div class="column is-6 has-text-centered numeros">
+            {{ formatNumber venta }}
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-12 has-text-centered">
+            📆 {{ formatDate fecha_hora 'DD/MM/YY HH:mm' }}
+          </div>
+        </div>
+      </div>
+    </article> 
+    {{#if (fourth @index) }}
+      </div>
+      </div>
+      <div class="columns">
+    {{else}}
+      </div>
+    {{/if}}
+  {{/each}}
+</div>
