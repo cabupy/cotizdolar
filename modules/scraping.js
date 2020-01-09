@@ -5,19 +5,19 @@ const cheerio = require("cheerio");
 const moment = require("moment");
 const _ = require("lodash");
 
-// alberdi
-// basa
-// bbva
-// bcp
-// chaco
-// eurocambios
-// familiar
-// fe
-// interfisa
-// maxicambios
-// myd
-// set
-// vision
+// alberdi ok
+// basa ok
+// bbva ok
+// bcp ok
+// chaco ok
+// eurocambios ok
+// familiar - no ok
+// fe ok
+// interfisa ok 
+// maxicambios ok 
+// myd ok 
+// set ok
+// vision ok
 
 const op = {
   rejectUnauthorized: false,
@@ -214,7 +214,7 @@ const getInterfisa = async () => {
   }
 };
 
-const getMaxicambios = async () => {
+const getMaxicambiosOld = async () => {
   const hoy = moment(Date.now()).format("DDMMYYYY");
   try {
     const body = await rb(
@@ -222,6 +222,23 @@ const getMaxicambios = async () => {
     );
     const compra = +body[0].Compra;
     const venta = +body[0].Venta;
+    return ["maxicambios", compra, venta];
+  } catch (error) {
+    return ["maxicambios", 0, 0];
+  }
+};
+
+const getMaxicambios = async () => {
+  const url = `https://www.maxicambios.com.py/`;
+  try {
+    const html = await rh(url);
+    const $ = cheerio.load(html);
+    const compra = +$(
+      "#monedas div div div div div p"
+    )[1].children[0].data.trim();
+    const venta = +$(
+      "#monedas div div div div div p"
+    )[4].children[0].data.trim();
     return ["maxicambios", compra, venta];
   } catch (error) {
     return ["maxicambios", 0, 0];
