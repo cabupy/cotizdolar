@@ -165,7 +165,7 @@ const getEURO = async () => {
   }
 };
 
-const getFamiliar = async () => {
+const getFamiliarOld = async () => {
   const url = `https://www.familiar.com.py/`;
   try {
     const html = await rh(url);
@@ -174,6 +174,23 @@ const getFamiliar = async () => {
       .children[0].data.trim()
       .replace(".", "");
     const venta = +$("div#cotizacionesDesktop > div > hgroup > div > p")[3]
+      .children[0].data.trim()
+      .replace(".", "");
+    return ["familiar", compra, venta];
+  } catch (error) {
+    return ["familiar", 0, 0];
+  }
+};
+
+const getFamiliar = async () => {
+  const url = `https://www.familiar.com.py/`;
+  try {
+    const html = await rh(url);
+    const $ = cheerio.load(html);
+    const compra = +$("#cotizaciones div div div div div strong")[0]
+      .children[0].data.trim()
+      .replace(".", "");
+    const venta = +$("#cotizaciones div div div div div strong")[1]
       .children[0].data.trim()
       .replace(".", "");
     return ["familiar", compra, venta];
