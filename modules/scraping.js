@@ -5,19 +5,19 @@ const cheerio = require("cheerio");
 const moment = require("moment");
 const _ = require("lodash");
 
-// alberdi ok
-// basa ok
-// bbva ok
-// bcp ok
-// chaco ok
-// eurocambios ok
-// familiar - no ok
-// fe ok
-// interfisa ok 
-// maxicambios ok 
-// myd ok 
-// set ok
-// vision ok
+// alberdi ok .
+// basa ok .
+// bbva ok .
+// bcp ok .
+// chaco ok .
+// eurocambios ok .
+// familiar ok .
+// fe ok .
+// interfisa ok .
+// maxicambios ok .
+// myd ok .
+// set ok .
+// vision ok .
 
 const op = {
   rejectUnauthorized: false,
@@ -284,11 +284,11 @@ const getSET = async () => {
   try {
     const html = await rh(url);
     const $ = cheerio.load(html);
-    const compra = +$("td.UICotizacion")[0]
+    const compra = +$("td.UICotizacion > p")[0]
       .children[0].data.trim()
       .replace("G. ", "")
       .replace(".", "");
-    const venta = +$("td.UICotizacion")[1]
+    const venta = +$("td.UICotizacion > p")[1]
       .children[0].data.trim()
       .replace("G. ", "")
       .replace(".", "");
