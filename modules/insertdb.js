@@ -37,6 +37,14 @@ const getCotizaciones = async () => {
     venta: _.toInteger(bcp[2])
   });
 
+  const bnf = await mc.getBNF();
+  //console.log(bnf);
+  cotizaciones.push({
+    casa: "bnf",
+    compra: _.toInteger(bnf[1]),
+    venta: _.toInteger(bnf[2])
+  });
+
   const chaco = await mc.getChaco();
   //console.log(chaco);
   cotizaciones.push({

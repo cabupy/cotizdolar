@@ -9,6 +9,7 @@ const _ = require("lodash");
 // basa ok .
 // bbva ok .
 // bcp ok .
+// bnf ok .
 // chaco ok .
 // eurocambios ok .
 // familiar ok .
@@ -137,6 +138,28 @@ const getBCP = async () => {
     return ["bcp", compra, venta];
   } catch (error) {
     return ["bcp", 0, 0];
+  }
+};
+
+const getBNF = async () => {
+  const url = `https://www.bnf.gov.py/`;
+  try {
+    const html = await rh(url);
+    const $ = cheerio.load(html);
+    const compra = +$("table > tbody > tr > td.text-right")[0]
+      .children[0].data
+      .trim()
+      .replace(".", "")
+      .replace(",", ".");
+    const venta = +$("table > tbody > tr > td.text-right")[1]
+      .children[0].data
+      .trim()
+      .replace(".", "")
+      .replace(",", ".");
+    
+    return ["bnf", compra, venta];
+  } catch (error) {
+    return ["bnf", 0, 0];
   }
 };
 
@@ -324,6 +347,7 @@ module.exports = {
   getBASA,
   getBBVA,
   getBCP,
+  getBNF,
   getChaco,
   getEURO,
   getFamiliar,
