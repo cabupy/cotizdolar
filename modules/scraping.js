@@ -274,10 +274,10 @@ const getMaxicambios = async () => {
     const html = await rh(url);
     const $ = cheerio.load(html);
     const compra = +$(
-      "#monedas div div div div div p"
+      "#monedas div div div div div div div p"
     )[1].children[0].data.trim();
     const venta = +$(
-      "#monedas div div div div div p"
+      "#monedas div div div div div div div p"
     )[4].children[0].data.trim();
     return ["maxicambios", compra, venta];
   } catch (error) {
