@@ -30,7 +30,7 @@
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
     "lodash": "^4.17.11",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "pg": "^7.11.0",
     "request": "^2.88.0",
     "twit": "^2.2.11",
